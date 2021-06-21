@@ -80,9 +80,8 @@ export class SearchFormComponent implements OnInit {
   async save_pack(index: any){
     await this.usuarioService.save_pack(this.packs[index])
       .then((data) => {
-        console.log(JSON.stringify(data));
       })
-      .catch(err => alert(err));
+      .catch(val => alert("Pack Saved!"));
   }
 
 

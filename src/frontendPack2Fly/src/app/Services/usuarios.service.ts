@@ -52,11 +52,20 @@ export class UsuariosService {
     });
   }
 
-  save_pack(Pack: any){
-    return this.http
-      .post("http://localhost:8000/save_pack",Pack)
-      .toPromise()
+  save_pack(Pack: any) {
+    return new Promise((resolve, reject) => {
+      return this.http
+        .get("http://localhost:8000/save_pack?Airline=" + Pack.flight.Airline + "&Origin=" + Pack.flight.City_Origin + "&Destination=" + Pack.flight.City_Destination + "&HotelName=" + Pack.hotel.name + "&Place1=" + Pack.places[0].name + "&Place2=" + Pack.places[1].name + "&Place3=" + Pack.places[2].name + "&Price="+Pack.price)
+        .subscribe(res => {
+            resolve(res);
+          },
+          (err: any) => {
+            reject(err);
+          }
+        )
+    });
   }
+
 
   send_gmail(From: string,Title: string, Message: string){
     return new Promise((resolve, reject) =>{

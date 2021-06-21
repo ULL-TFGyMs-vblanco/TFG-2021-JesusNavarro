@@ -36,11 +36,9 @@ app.get('/packs',async (req, res) => {
     return res;
 })
 
-app.post('/save_pack', async (req,res) => {
-    console.log("Elementos de la respuesta: " + req)
-    //const Pack = req.body.Pack;
+app.get('/save_pack', async (req,res) => {
 
-    let result = await save_pack(Pack);
+    let result = await save_pack(req.query.Airline,req.query.Origin,req.query.Destination,req.query.HotelName,req.query.Place1,req.query.Place2,req.query.Place3,req.query.Price);
     res.send(result)
     return res;
 })
@@ -67,8 +65,8 @@ async function get_data(origin,destiny,checkout,checkin,people){
     return result;
 }
 
-async function save_pack(pack){
-    let result = await paquetes.save_pack(pack)
+async function save_pack(Airline,Origin,Destination,HotelName,Place1,Place2,Place3,Price){
+    let result = await paquetes.save_pack(Airline,Origin,Destination,HotelName,Place1,Place2,Place3,Price)
     return result;
 }
 

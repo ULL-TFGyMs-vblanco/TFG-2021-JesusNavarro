@@ -40,10 +40,10 @@ exports.get_top_packs = async () =>{
     return  modulo_tablas.get_top_packs();
 }
 
-exports.save_pack = async(pack) => {
+exports.save_pack = async(Airline,Origin,Destination,HotelName,Place1,Place2,Place3,Price) => {
     create_conection();
-    console.log("Valor de Size "+ pack.size);
     await modulo_tablas.initiate_table();
-    let result = await modulo_tablas.save_pack(pack);
+    let result = await modulo_tablas.save_pack(Airline,Origin,Destination,HotelName,Place1,Place2,Place3,Price);
+    await modulo_tablas.show_packs();
     return result;
 }

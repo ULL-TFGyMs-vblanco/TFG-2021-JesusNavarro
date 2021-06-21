@@ -162,7 +162,7 @@ exports.get_recommended_packs = async () =>{
     const packs = await Pack.findAll();
     let packs_to_return = [];
 
-    let pos = 2
+    let pos = Math.floor(Math.random() * (packs.length - 0)) + 0;
     for(let i=0;i<10;i++){
         if(packs[pos]!=null){
             let is_in=false;
@@ -173,14 +173,11 @@ exports.get_recommended_packs = async () =>{
             }
             if(is_in===false){
                 packs_to_return.push(packs[pos]);
-                pos += 2;
+                pos = Math.floor(Math.random() * (packs.length - 0)) + 0;
             }
         }
         else{
-            if(pos<0){
-                pos = 3;
-            }
-            pos -= 1;
+            pos = Math.floor(Math.random() * (packs.length - 0)) + 0;;
         }
     }
     return packs_to_return;
@@ -194,42 +191,37 @@ exports.get_recommended_packs = async () =>{
  * @brief Funcion para guardar en la tabla un pack
  * @param pack pack a guardar
  */
-exports.save_pack = async (pack) =>{
-    console.log(pack);
+exports.save_pack = async (Airline,Origin,Destination,HotelName,Place1,Place2,Place3,Price) =>{
+    console.log(Airline,Origin,Destination,HotelName,Place1,Place2,Place3,Price)
     //NO olvidar que cuando guardamos el paquete, tenemos que guardar en el usuario que lo guardo que paquete es.
     var activities='';
 
     try {
-        for (var i = 0; i < pack.places.length; i++) {
-            activities += pack.places[i].name;
-            if (i < pack.places.length - 1) {
-                activities += ',';
-            }
-        }
+        activities += Place1 + ", " + Place2 +", "+Place3;
         /**
          * Almacenamos la informacion en la tabla con un formato transporte,alojamiento,actividades y precio
          * */
         const pack_to_save = Pack.create({
-            transport: "Flight " + pack.flight.Airline + " from " + pack.flight.City_Origin + " to " + pack.flight.City_Destination + " at " + pack.flight.DepartureDate, //Vamos a identificar el vuelo con origen + destino + fecha ida
-            accomodation: pack.hotel.name,
+            transport: "Flight " + Airline + " from " + Origin + " to " + Destination, //Vamos a identificar el vuelo con origen + destino + fecha ida
+            accomodation: HotelName,
             activities: activities,
-            price: pack.price
+            price: Price,
+
         })
 
         /**
          * Almacenamos a su vez cada uno de los componentes que componen el pack
          * */
 
-        save_transport(pack.flight)
-        save_accomodation(pack.hotel)
-        save_activity(pack.places)
+        //save_transport(pack.flight)
+        //save_accomodation(pack.hotel)
+       // save_activity(pack.places)
 
         //Es posible que para el usuario, se le pase el correo electronico y se le asociara el indice del paquete recien guardado
 
-        return true;
+        return "Pack Created";
     }catch (error){
-        console.log("ERROR en Modulo_Tablas: " + error);
-        return false;
+        return ("ERROR in Modulo_Tablas: " + error);
     }
 }
 
